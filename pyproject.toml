@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "alibi>=0.5.5",
+    "catboost>=1.2.10",
     "category-encoders>=2.9.0",
     "lime>=0.2.0.1",
     "matplotlib>=3.10.8",
@@ -15,4 +16,5 @@ dependencies = [
     "scipy>=1.17.1",
     "seaborn>=0.13.2",
     "shap>=0.51.0",
+    "xgboost>=3.2.0",
 ]
