@@ -2,22 +2,22 @@
 
 ## 1. Introduction et Objectifs
 
-L'objectif de ce projet est de prédire la note d'examen d'élèves (Exam_Score) à partir de 19 variables explicatives (facteurs socio-démographiques, habitudes d'études, environnement scolaire).
+L'objectif de ce projet est de prédire la note d'examen d'élèves (Exam_Score) à partir de différentes variables explicatives, tels que des facteurs socio-démographiques, habitudes d'études, ou environnement scolaire des élèves observés.
 
-Le jeu de données utilisé, StudentPerformanceFactors, provient de Kaggle et est un jeu de données fictif qui contient 6607 observations, garantissant ainsi une base statistique solide pour l'entraînement de modèles de Machine Learning.
+Le jeu de données utilisé, StudentPerformanceFactors, provient de Kaggle et est un jeu de données fictif qui contient 6607 observations et 19 variables, garantissant ainsi une base statistique solide pour l'entraînement de modèles de Machine Learning.
 
-Afin de répondre à la problématique, notre démarche suit un pipeline analytique complet :
+Afin de répondre à la problématique, notre démarche se comporte des étapes suivantes :
 
-- Séparation initiale des données (Train/Test Split).
-- Analyse Exploratoire (EDA) et nettoyage.
-- Gestion des valeurs extrêmes et manquantes.
-- Prétraitement et transformation des variables.
-- Entraînement, optimisation et comparaison de plusieurs modèles de Machine Learning.
-- Explicabilité globale et locale du modèle retenu.
+- Séparation initiale des données (Train/Test Split)
+- Analyse Exploratoire et nettoyage
+- Gestion des valeurs extrêmes et manquantes
+- Prétraitement et transformation des variables
+- Entraînement, optimisation et comparaison de plusieurs modèles de Machine Learning
+- Explicabilité globale et locale du modèle retenu
 
 ---
 
-## 2. Préparation des données et Analyse Exploratoire (EDA)
+## 2. Préparation des données et Analyse Exploratoire 
 
 ### 2.1. Train/Test Split
 
@@ -29,7 +29,7 @@ Nous avons également vérifié que la distribution de la variable cible Exam_Sc
 
 ---
 
-### 2.2. Exploration et Traitement des Valeurs Extrêmes
+### 2.2. Exploration, Corrélations et Traitement des Valeurs Extrêmes
 
 Après cela, nous avons effectué une analyse univariée, nous permettant d’observer la distribution et les caractéristiques de nos variables.
 
@@ -45,7 +45,8 @@ Dans un premier temps, pour les variables numériques, nous avons utilisé la co
 
 Dans un second temps, pour les variables qualitatives, nous avons utilisé la statistique de Cramer’s V. Cette mesure permet d’évaluer la force de l’association entre deux variables catégorielles, en s’appuyant sur le test du Chi², en obtenant une valeur normalisée comprise entre 0 (absence de relation) et 1 (relation forte), ce qui facilite l’interprétation.
 
-Cependant, les résultats obtenus montrent que, dans l’ensemble, les corrélations entre variables sont très faibles, qu’il s’agisse des variables numériques ou catégorielles. Aucune relation forte ne se dégage clairement. Cela s’explique probablement par le caractère fictif du jeu de données, qui ne reproduit pas fidèlement les dépendances structurelles observées dans des données réelles. Cette faible corrélation limite donc le réalisme du dataset et pourrait alors réduire la capacité des modèles à capter des relations significatives.
+Cependant, les résultats obtenus montrent que, dans l’ensemble, les corrélations entre variables sont très faibles, qu’il s’agisse des variables numériques ou catégorielles. Aucune relation forte ne se dégage clairement. Cela s’explique probablement par le caractère fictif du jeu de données, qui ne reproduit pas fidèlement les dépendances structurelles observées dans des données réelles. Cette faible corrélation limite donc le réalisme du dataset et pourrait alors réduire la capacité des modèles à capter des relations significatives. 
+Dans le cas inverse, nous aurions pu effectuer une sélection des variables à inclure dans notre modèle, afin d'éviter un biais de multicollinéarité. Cela pourrait notamment se faire en supprimant une à une les variables les plus corrélées à d'autres, puis en recalculant les corrélations après chaque suppression, jusqu'à ce qu'il n'existe plus de corrélations fortes selon un seuil définit, supérieures à 0,8 par exemple. 
 
 Enfin, nous avons étudié les corrélations entre les variables explicatives et la variable cible Exam_Score.
 
@@ -61,13 +62,16 @@ Les différents traitements effectués avant modélisation ont tous été faits 
 
 Nous avons ensuite repéré des valeurs manquantes dans les colonnes Teacher_Quality, Parental_Education_Level et Distance_from_Home. Ces variables étant catégorielles, leur pourcentage de valeurs manquantes étant très faibles, et l’analyse descriptive ne nous rapportant pas beaucoup d’informations nous permettant de déduire des façons d’imputer ces valeurs manquantes, nous avons décidé de les remplacer par la valeur la plus fréquente pour chacune de ces variables.
 
-Concernant le feature engineering, nous avons créé une nouvelle variable appelée Parent_Context, qui combine le niveau d’éducation des parents et le revenu familial. L’objectif est de capturer un effet d’interaction entre ces deux variables, car leur combinaison peut être plus explicative de l’environnement socio-économique de l’élève que chacune prise séparément. Cela permet potentiellement d’améliorer la capacité prédictive du modèle en introduisant une information plus riche. Nous avons ensuite observé la distribution de cette variable, et constaté que 2 modalités étaient très peu représentées (<6%). Afin d'améliorer la pertinence de la variable pour notre modèle, nous avons décidé de regrouper ces 2 catégories en une seule catégorie "Autres".
+Concernant le feature engineering, nous avons créé une nouvelle variable appelée Parent_Context, qui combine le niveau d’éducation des parents et le revenu familial. 
+L’objectif de cette variable est de capter un effet d’interaction entre ces deux variables, car leur combinaison peut être plus explicative de l’environnement socio-économique de l’élève que chacune prise séparément. Cela permet potentiellement d’améliorer la capacité prédictive du modèle en introduisant une information plus riche. 
+Nous avons ensuite observé la distribution de cette variable, et constaté que 2 modalités étaient très peu représentées (<6%). Afin d'améliorer la pertinence de la variable pour notre modèle, nous avons décidé de regrouper ces 2 catégories en une seule catégorie "Autres".
 
 Puis, avant la modélisation, certains traitements ont dû être effectués. Notamment l’encodage des variables catégorielles.
 
-Pour les variables catégorielles à faible cardinalité (ex : Genre, Activités extrascolaires), nous avons utilisé le OneHotEncoder. Pour les variables à plus forte cardinalité, nous avons utilisé un TargetEncoder. Cette méthode consiste à remplacer chaque catégorie par la moyenne de la variable cible associée à cette catégorie. Cela permet de réduire fortement la dimensionnalité tout en conservant une information statistique pertinente, contrairement au OneHotEncoder qui aurait généré un grand nombre de variables peu informatives et potentiellement du bruit.
+Pour les variables catégorielles à faible cardinalité (ex : Genre, Activités extrascolaires), nous avons utilisé le OneHotEncoder. 
+Pour les variables à plus forte cardinalité, nous avons utilisé un TargetEncoder. Cette méthode consiste à remplacer chaque catégorie par la moyenne de la variable cible associée à cette catégorie. Cela permet de réduire fortement la dimensionnalité tout en conservant une information statistique pertinente, contrairement au OneHotEncoder qui aurait généré un grand nombre de variables peu informatives et potentiellement du bruit.
 
-Enfin, nous avons standardisé nos données, pour les variables numériques (sans prendre en compte les variables ayant été encodées qui sont donc déjà standardisées). Pour ce faire, nous avons appliqué la méthode du StandardScaler . Cela est notamment utile pour l'algorithme du SVR qui base son optimisation sur le calcul de distances géométriques dans l'espace des features. Ainsi, sans standardisation, une variable avec une grande échelle (ex: Previous_Scores) écraserait complètement l'impact des variables à petite échelle (ex: Tutoring_Sessions). De plus, cela garantit une convergence plus rapide pour le modèle linéaire.
+Enfin, nous avons standardisé nos données, pour les variables numériques (sans prendre en compte les variables ayant été encodées qui sont donc déjà standardisées). Pour ce faire, nous avons appliqué la méthode du StandardScaler. Cela est notamment utile pour l'algorithme du SVR qui base son optimisation sur le calcul de distances géométriques dans l'espace des features. Ainsi, sans standardisation, une variable avec une grande échelle (ex: Previous_Scores) écraserait complètement l'impact des variables à petite échelle (ex: Tutoring_Sessions). De plus, cela garantit une convergence plus rapide pour le modèle linéaire.
 
 ---
 
