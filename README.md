@@ -64,6 +64,12 @@ Le dataset étant fictif, les corrélations sont très faibles. Les résultats r
 
 ---
 
+## Python Version
+
+3.11
+
+---
+
 ## Reproduire le projet (avec uv)
 
 ### 1. Installer uv
