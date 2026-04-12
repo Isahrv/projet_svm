@@ -4,7 +4,7 @@
 
 L'objectif de ce projet est de prédire la **note d'examen d'élèves**, représentée par la variable *Exam_Score*, à partir de différentes variables explicatives, tels que des facteurs socio-démographiques, habitudes d'études, ou environnement scolaire des élèves observés.
 
-Le jeu de données utilisé, *StudentPerformanceFactors*, provient de *Kaggle* et est un jeu de données fictif qui contient 6607 observations et 19 variables, garantissant ainsi une base statistique solide pour l'entraînement de modèles de Machine Learning.
+Le jeu de données utilisé, *StudentPerformanceFactors*, provient de *Kaggle* et est un jeu de données fictif qui contient **6607** observations et **19** variables, garantissant ainsi une base statistique solide pour l'entraînement de modèles de Machine Learning.
 
 Afin de répondre à la problématique, notre démarche se comporte des étapes suivantes :
 
@@ -125,15 +125,19 @@ Ensuite, nous avons testé un modèle de ***Random Forest***, modèle ensemblist
 
 ### 3. AdaBoost Regressor :
 
-Nous avons également implémenté un modèle ***AdaBoost***, qui repose sur une approche de **Boosting**. Contrairement au bagging , le boosting construit les modèles de manière séquentielle, chaque nouveau modèle cherchant à corriger les erreurs du précédent. AdaBoost accorde ainsi plus de poids aux observations mal prédites au fil des itérations. Ce type de modèle est particulièrement efficace pour capturer des relations complexes, mais il peut être sensible au bruit et aux valeurs aberrantes, ce qui justifie d’autant plus le travail préalable de winsorisation.
+Nous avons également implémenté un modèle ***AdaBoost***, qui repose sur une approche de **Boosting**. Contrairement au bagging , le boosting construit les modèles de manière séquentielle, chaque nouveau modèle cherchant à corriger les erreurs du précédent. AdaBoost accorde ainsi plus de poids aux observations mal prédites au fil des itérations. 
+
+Ce type de modèle est particulièrement efficace pour capturer des relations complexes, mais il peut être sensible au bruit et aux valeurs aberrantes, ce qui justifie d’autant plus le travail préalable de winsorisation.
 
 ### 4. XGBoost Regressor :
 
-Puis, nous avons testé le modèle ***XGBoost***, une implémentation optimisée du **gradient boosting**. Il repose sur une descente de gradient appliquée à des arbres de décision, tout en intégrant des mécanismes de régularisation (L1 et L2) afin de limiter le surapprentissage. Ce modèle est réputé pour gérer efficacement les interactions complexes entre variables et optimiser automatiquement la structure des arbres.
+Puis, nous avons testé le modèle ***XGBoost***, une implémentation optimisée du **gradient boosting**. Il repose sur une descente de gradient appliquée à des arbres de décision, tout en intégrant des mécanismes de régularisation (L1 et L2) afin de limiter le surapprentissage. 
+
+Ce modèle est réputé pour gérer efficacement les interactions complexes entre variables et optimiser automatiquement la structure des arbres.
 
 ### 5. Support Vector Regressor (SVR) :
 
-Enfin, le ***Support Vector Regressor**, faisant partie de la famille des **SVM**, permet de projeter les données dans un espace de plus grande dimension où la relation devient séparable. Il vise à minimiser l'erreur tout en tolérant un certain écart grâce à sa marge. 
+Enfin, le **Support Vector Regressor**, faisant partie de la famille des **SVM**, permet de projeter les données dans un espace de plus grande dimension où la relation devient séparable. Il vise à minimiser l'erreur tout en tolérant un certain écart grâce à sa marge. 
 
 ---
 
@@ -141,7 +145,7 @@ Enfin, le ***Support Vector Regressor**, faisant partie de la famille des **SVM*
 
 Afin d’obtenir les meilleurs modèles possibles, pour chacun des modèles testés les hyperparamètres ont été optimisés via **validation croisée**, en commençant par une recherche large à l’aide d’un ***RandomizedSearchCV***, suivie d’une recherche plus précise auprès des meilleurs hyperparamètres ressortant, à partir d’un ***GridSearchCV***, en cherchant le modèle avec le moins d’erreurs, minimisant le RMSE. Cela permet d'ajuster le compromis **biais-variance** (par exemple, gérer la profondeur des arbres pour le Random Forest ou le paramètre de régularisation pour le SVR).
 
-A l’issue de la comparaison des résultats, c’est le modèle **SVR** qui s’est avéré être le plus performant, **minimisant les erreurs (MSE, MAE, et RMSE)**, tout en **maximisant la qualité des prévisions du modèle (R2)**.
+A l’issue de la comparaison des résultats, c’est le modèle **SVR** qui s’est avéré être le plus performant, **minimisant les erreurs (MSE, MAE, et RMSE)**, tout en **maximisant la qualité des prévisions du modèle (R2)** : environ 76% de la variabilité des données sont expliquées par le modèle.
 
 Le meilleur modèle obtenu est donc un SVR avec les hyperparamètres suivants :
 ***{'C': 700, 'epsilon': 0.8, 'kernel': 'linear'}***
